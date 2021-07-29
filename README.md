@@ -26,7 +26,7 @@ We use the [country.io](http://country.io/data/) service to retrieve the data.
 
 ![Country table](doc/table.png)
 
-Použití:
+Usage:
 
 ```php
 $manager = new \Baraja\Country\CountryManager;
