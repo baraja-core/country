@@ -14,5 +14,8 @@ final class CountryExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		OrmAnnotationsExtension::addAnnotationPathToManager($builder, 'Baraja\Country\Entity', __DIR__ . '/Entity');
+
+		$builder->addDefinition($this->prefix('countryManager'))
+			->setFactory(CountryManager::class);
 	}
 }
