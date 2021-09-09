@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Baraja\Country\Entity;
 
 
+use Baraja\Country\CountryToEmoji;
 use Baraja\Doctrine\Identifier\IdentifierUnsigned;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -48,6 +49,16 @@ final class Country
 	}
 
 
+	public function getFlag(): string
+	{
+		try {
+			return CountryToEmoji::getByCode($this->getCode());
+		} catch (\Throwable) {
+			return '🏳️';
+		}
+	}
+
+
 	public function getCode(): string
 	{
 		return $this->code;
@@ -56,7 +67,7 @@ final class Country
 
 	public function setCode(string $code): void
 	{
-		$this->code = $code;
+		$this->code = strtoupper($code);
 	}
 
 
