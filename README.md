@@ -36,3 +36,15 @@ $manager->getByCode('CZ');
 Returns:
 
 ![Country entity](doc/entity.png)
+
+🏳️‍🌈 Flag support
+----------------
+
+The package fully supports the ability to get a country's flag as an emoji. To get it, simply call the method above the entity:
+
+```php
+$manager = new \Baraja\Country\CountryManager;
+$country = $manager->getByCode('CZ');
+
+echo $country->getFlag(); // return 🇨🇿
+```
