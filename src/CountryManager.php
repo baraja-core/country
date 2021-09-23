@@ -18,6 +18,42 @@ final class CountryManager
 	}
 
 
+	/**
+	 * @return Country[]
+	 */
+	public function getAll(): array
+	{
+		/** @var Country[] $list */
+		$list = $this->entityManager->getRepository(Country::class)
+			->createQueryBuilder('country')
+			->orderBy('country.name', 'ASC')
+			->getQuery()
+			->getResult();
+
+		if ($list === []) {
+			$this->sync();
+			$list = $this->getAll();
+		}
+
+		return $list;
+	}
+
+
+	/**
+	 * @throws NoResultException|NonUniqueResultException
+	 */
+	public function getById(int $id): Country
+	{
+		return $this->entityManager->getRepository(Country::class)
+			->createQueryBuilder('country')
+			->where('country.id = :id')
+			->setParameter('id', $id)
+			->setMaxResults(1)
+			->getQuery()
+			->getSingleResult();
+	}
+
+
 	public function getByCode(string $code): Country
 	{
 		try {
