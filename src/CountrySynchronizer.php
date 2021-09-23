@@ -12,6 +12,10 @@ use Doctrine\ORM\NoResultException;
 
 final class CountrySynchronizer
 {
+	private const DEFAULT_ACTIVE = [
+		'CZE',
+	];
+
 	private string $isoCodes = 'http://country.io/iso3.json';
 
 	private string $names = 'http://country.io/names.json';
@@ -23,10 +27,6 @@ final class CountrySynchronizer
 	private string $phoneCode = 'http://country.io/phone.json';
 
 	private string $currency = 'http://country.io/currency.json';
-
-	private const DEFAULT_ACTIVE = [
-		'CZE',
-	];
 
 
 	public function __construct(
