@@ -24,6 +24,10 @@ final class CountrySynchronizer
 
 	private string $currency = 'http://country.io/currency.json';
 
+	private const DEFAULT_ACTIVE = [
+		'CZE',
+	];
+
 
 	public function __construct(
 		private EntityManager $entityManager,
@@ -49,6 +53,7 @@ final class CountrySynchronizer
 		$return = [];
 		foreach ($this->download($this->isoCodes) as $code => $isoCode) {
 			$country = new Country($code, $isoCode);
+			$country->setActive(isset(self::DEFAULT_ACTIVE[$isoCode]));
 			$this->entityManager->persist($country);
 			$return[$code] = $country;
 		}
