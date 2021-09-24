@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
 #[Table(name: 'core__country')]
-final class Country
+class Country
 {
 	use IdentifierUnsigned;
 
