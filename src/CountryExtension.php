@@ -30,17 +30,20 @@ final class CountryExtension extends CompilerExtension
 		/** @var ServiceDefinition $pluginManager */
 		$pluginManager = $this->getContainerBuilder()->getDefinitionByType(PluginManager::class);
 		$pluginManager->addSetup(
-			'?->addComponent(?)', ['@self', [
-				'key' => 'countryDefault',
-				'name' => 'cms-country-default',
-				'implements' => CountryPlugin::class,
-				'componentClass' => VueComponent::class,
-				'view' => 'default',
-				'source' => __DIR__ . '/../template/default.js',
-				'position' => 100,
-				'tab' => 'Country',
-				'params' => [],
-			]]
+			'?->addComponent(?)', [
+				'@self',
+				[
+					'key' => 'countryDefault',
+					'name' => 'cms-country-default',
+					'implements' => CountryPlugin::class,
+					'componentClass' => VueComponent::class,
+					'view' => 'default',
+					'source' => __DIR__ . '/../template/default.js',
+					'position' => 100,
+					'tab' => 'Country',
+					'params' => [],
+				]
+			]
 		);
 	}
 }
