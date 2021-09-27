@@ -26,7 +26,8 @@ final class CountryManager
 		/** @var Country[] $list */
 		$list = $this->entityManager->getRepository(Country::class)
 			->createQueryBuilder('country')
-			->orderBy('country.name', 'ASC')
+			->orderBy('country.active', 'DESC')
+			->addOrderBy('country.name', 'ASC')
 			->getQuery()
 			->getResult();
 
@@ -70,6 +71,13 @@ final class CountryManager
 			}
 			throw $e;
 		}
+	}
+
+
+	public function setActive(Country $country, bool $active = true): void
+	{
+		$country->setActive($active);
+		$this->entityManager->flush();
 	}
 
 
