@@ -60,7 +60,7 @@ Vue.component('cms-country-default', {
 			}
 			axiosApi.post('cms-country/set-active', {
 				id: id
-			}).then(req => {
+			}).then(() => {
 				this.sync();
 			});
 		}

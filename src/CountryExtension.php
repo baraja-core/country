@@ -30,7 +30,8 @@ final class CountryExtension extends CompilerExtension
 		/** @var ServiceDefinition $pluginManager */
 		$pluginManager = $this->getContainerBuilder()->getDefinitionByType(PluginManager::class);
 		$pluginManager->addSetup(
-			'?->addComponent(?)', [
+			'?->addComponent(?)',
+			[
 				'@self',
 				[
 					'key' => 'countryDefault',
@@ -42,8 +43,8 @@ final class CountryExtension extends CompilerExtension
 					'position' => 100,
 					'tab' => 'Country',
 					'params' => [],
-				]
-			]
+				],
+			],
 		);
 	}
 }
