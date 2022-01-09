@@ -6,39 +6,40 @@ namespace Baraja\Country\Entity;
 
 
 use Baraja\Country\CountryToEmoji;
-use Baraja\Doctrine\Identifier\IdentifierUnsigned;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
+use Baraja\EcommerceStandard\DTO\CountryInterface;
+use Doctrine\ORM\Mapping as ORM;
 
-#[Entity]
-#[Table(name: 'core__country')]
-class Country
+#[ORM\Entity]
+#[ORM\Table(name: 'core__country')]
+class Country implements CountryInterface
 {
-	use IdentifierUnsigned;
+	#[ORM\Id]
+	#[ORM\Column(type: 'integer', unique: true, options: ['unsigned' => true])]
+	#[ORM\GeneratedValue]
+	protected int $id;
 
-	#[Column(type: 'string', length: 2, unique: true)]
+	#[ORM\Column(type: 'string', length: 2, unique: true)]
 	private string $code;
 
-	#[Column(type: 'string', length: 3, unique: true)]
+	#[ORM\Column(type: 'string', length: 3, unique: true)]
 	private string $isoCode;
 
-	#[Column(type: 'string', length: 64)]
+	#[ORM\Column(type: 'string', length: 64)]
 	private string $name;
 
-	#[Column(type: 'string', length: 2)]
+	#[ORM\Column(type: 'string', length: 2)]
 	private string $continent;
 
-	#[Column(type: 'string', length: 64)]
+	#[ORM\Column(type: 'string', length: 64)]
 	private string $capital;
 
-	#[Column(type: 'string', length: 16)]
+	#[ORM\Column(type: 'string', length: 16)]
 	private string $phone;
 
-	#[Column(type: 'string', length: 3)]
+	#[ORM\Column(type: 'string', length: 3)]
 	private string $currency;
 
-	#[Column(type: 'boolean')]
+	#[ORM\Column(type: 'boolean')]
 	private bool $active = true;
 
 
@@ -46,6 +47,12 @@ class Country
 	{
 		$this->setCode($code);
 		$this->setIsoCode($isoCode);
+	}
+
+
+	public function getId(): int
+	{
+		return $this->id;
 	}
 
 
