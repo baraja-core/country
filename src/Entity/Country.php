@@ -9,7 +9,7 @@ use Baraja\Country\CountryToEmoji;
 use Baraja\EcommerceStandard\DTO\CountryInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: CountryRepository::class)]
 #[ORM\Table(name: 'core__country')]
 class Country implements CountryInterface
 {
