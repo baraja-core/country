@@ -6,13 +6,11 @@ namespace Baraja\Country\Cms;
 
 
 use Baraja\Country\CountryManagerAccessor;
-use Baraja\Doctrine\EntityManager;
 use Baraja\StructuredApi\BaseEndpoint;
 
 final class CmsCountryEndpoint extends BaseEndpoint
 {
 	public function __construct(
-		private EntityManager $entityManager,
 		private CountryManagerAccessor $countryManagerAccessor,
 	) {
 	}
@@ -38,7 +36,7 @@ final class CmsCountryEndpoint extends BaseEndpoint
 		$this->sendJson(
 			[
 				'countries' => $countries,
-			]
+			],
 		);
 	}
 
@@ -48,7 +46,7 @@ final class CmsCountryEndpoint extends BaseEndpoint
 		$country = $this->countryManagerAccessor->get()->getById($id);
 		$this->countryManagerAccessor->get()->setActive($country, !$country->isActive());
 		$this->flashMessage(
-			'Country has been marked as ' . ($country->isActive() ? 'active' : 'hidden') . '.',
+			sprintf('Country has been marked as %s.', $country->isActive() ? 'active' : 'hidden'),
 			self::FLASH_MESSAGE_SUCCESS,
 		);
 		$this->sendOk();

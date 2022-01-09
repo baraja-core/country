@@ -6,31 +6,31 @@ namespace Baraja\Country;
 
 
 use Baraja\Country\Entity\Country;
-use Baraja\Doctrine\EntityManager;
+use Baraja\Country\Entity\CountryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
 final class CountryManager
 {
+	private CountryRepository $countryRepository;
+
+
 	public function __construct(
-		private EntityManager $entityManager,
+		private EntityManagerInterface $entityManager,
 	) {
+		$countryRepository = $entityManager->getRepository(Country::class);
+		assert($countryRepository instanceof CountryRepository);
+		$this->countryRepository = $countryRepository;
 	}
 
 
 	/**
-	 * @return Country[]
+	 * @return array<int, Country>
 	 */
 	public function getAll(): array
 	{
-		/** @var Country[] $list */
-		$list = $this->entityManager->getRepository(Country::class)
-			->createQueryBuilder('country')
-			->orderBy('country.active', 'DESC')
-			->addOrderBy('country.name', 'ASC')
-			->getQuery()
-			->getResult();
-
+		$list = $this->countryRepository->getAll();
 		if ($list === []) {
 			$this->sync();
 			$list = $this->getAll();
@@ -45,26 +45,14 @@ final class CountryManager
 	 */
 	public function getById(int $id): Country
 	{
-		return $this->entityManager->getRepository(Country::class)
-			->createQueryBuilder('country')
-			->where('country.id = :id')
-			->setParameter('id', $id)
-			->setMaxResults(1)
-			->getQuery()
-			->getSingleResult();
+		return $this->countryRepository->getById($id);
 	}
 
 
 	public function getByCode(string $code): Country
 	{
 		try {
-			return $this->entityManager->getRepository(Country::class)
-				->createQueryBuilder('country')
-				->where('country.code = :code OR country.isoCode = :code')
-				->setParameter('code', $code)
-				->setMaxResults(1)
-				->getQuery()
-				->getSingleResult();
+			return $this->countryRepository->getByCode($code);
 		} catch (NoResultException | NonUniqueResultException $e) {
 			if ($this->sync() === true) {
 				return $this->getByCode($code);

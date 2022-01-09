@@ -6,9 +6,8 @@ namespace Baraja\Country;
 
 
 use Baraja\Country\Entity\Country;
-use Baraja\Doctrine\EntityManager;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
+use Baraja\Country\Entity\CountryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class CountrySynchronizer
 {
@@ -28,25 +27,21 @@ final class CountrySynchronizer
 
 	private string $currency = 'http://country.io/currency.json';
 
+	private CountryRepository $countryRepository;
+
 
 	public function __construct(
-		private EntityManager $entityManager,
+		private EntityManagerInterface $entityManager,
 	) {
+		$countryRepository = $entityManager->getRepository(Country::class);
+		assert($countryRepository instanceof CountryRepository);
+		$this->countryRepository = $countryRepository;
 	}
 
 
 	public function run(): bool
 	{
-		try {
-			$countries = (int) $this->entityManager->getRepository(Country::class)
-				->createQueryBuilder('country')
-				->select('COUNT(country.id)')
-				->getQuery()
-				->getSingleScalarResult();
-		} catch (NoResultException | NonUniqueResultException) {
-			$countries = 0;
-		}
-		if ($countries > 0) {
+		if ($this->countryRepository->getCount() > 0) {
 			return false;
 		}
 
@@ -99,13 +94,16 @@ final class CountrySynchronizer
 	private function download(string $url): array
 	{
 		$data = (string) file_get_contents($url);
-		if (!$data) {
-			throw new \InvalidArgumentException('API response for URL "' . $url . '" is empty.');
+		if ($data === '') {
+			throw new \InvalidArgumentException(sprintf('API response for URL "%s" is empty.', $url));
 		}
 		try {
-			return (array) json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+			/** @var array<string, string> $return */
+			$return = (array) json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+
+			return $return;
 		} catch (\Throwable $e) {
-			throw new \InvalidArgumentException('Invalid json response: ' . $e->getMessage(), $e->getCode(), $e);
+			throw new \InvalidArgumentException(sprintf('Invalid json response: %s', $e->getMessage()), 500, $e);
 		}
 	}
 }
