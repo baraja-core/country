@@ -47,7 +47,7 @@ final class CmsCountryEndpoint extends BaseEndpoint
 		$this->countryManagerAccessor->get()->setActive($country, !$country->isActive());
 		$this->flashMessage(
 			sprintf('Country has been marked as %s.', $country->isActive() ? 'active' : 'hidden'),
-			self::FLASH_MESSAGE_SUCCESS,
+			self::FlashMessageSuccess,
 		);
 		$this->sendOk();
 	}
