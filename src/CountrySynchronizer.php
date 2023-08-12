@@ -15,17 +15,17 @@ final class CountrySynchronizer
 		'CZE',
 	];
 
-	private string $isoCodes = 'http://country.io/iso3.json';
+	private string $isoCodes = 'https://cdn.brj.cz/data/country/iso3.json';
 
-	private string $names = 'http://country.io/names.json';
+	private string $names = 'https://cdn.brj.cz/data/country/names.json';
 
-	private string $continent = 'http://country.io/continent.json';
+	private string $continent = 'https://cdn.brj.cz/data/country/continent.json';
 
-	private string $capital = 'http://country.io/capital.json';
+	private string $capital = 'https://cdn.brj.cz/data/country/capital.json';
 
-	private string $phoneCode = 'http://country.io/phone.json';
+	private string $phoneCode = 'https://cdn.brj.cz/data/country/phone.json';
 
-	private string $currency = 'http://country.io/currency.json';
+	private string $currency = 'https://cdn.brj.cz/data/country/currency.json';
 
 	private CountryRepository $countryRepository;
 
