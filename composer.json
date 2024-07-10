@@ -14,7 +14,7 @@
 		"baraja-core/doctrine": "^3.0"
 	},
 	"require-dev": {
-		"baraja-core/structured-api": "^3.0",
+		"baraja-core/structured-api": "^4.1",
 		"baraja-core/plugin-system": "^2.0",
 		"phpstan/phpstan": "^1.0",
 		"phpstan/extension-installer": "^1.1",
